@@ -1,0 +1,79 @@
+High Level Ant Brain CFG
+________________________
+
+Brain ::= Function Brain | Function
+
+Function ::= function fun_name > fun_name { Statement }
+
+Statement ::= Statement Statement
+	| FailableStatement
+	| fun_name
+	| Mark i
+	| Unmark i
+	| Drop
+	| Turn lr
+	| While (cond sensedir) { Statement }
+
+FailableStatement ::= Failable { Statement }
+
+fun_name ::= [a-z|A-Z|0-9|_]+
+
+Failable ::= PickUp { Statement } { Statement }
+	| Move { Statement } { Statement }
+	| Flip p { Statement } { Statement }
+	| If (cond sensedir) { Statement } { Statement }
+
+sensedir	  	::=	  	Here
+ 	  	|	  	Ahead
+ 	  	|	  	LeftAhead
+ 	  	|	  	RightAhead
+ 	  	
+cond	  	::=	  	Friend
+ 	  	|	  	Foe
+ 	  	|	  	FriendWithFood
+ 	  	|	  	FoeWithFood
+ 	  	|	  	Food
+ 	  	|	  	Rock
+ 	  	|	  	Marker  i
+ 	  	|	  	FoeMarker
+ 	  	|	  	Home
+ 	  	|	  	FoeHome
+
+lr	  	::=	  	Left | Right
+i	  	::=	  	0 | 1 | 2 | 3 | 4 | 5
+p	  	::=	  	1 | 2 | 3 | ...
+
+________________________________________________________________________________
+
+Standard Ant Brain CFG
+______________________
+
+instruction	  	::=	  	Sense  sensedir  st1  st2  cond
+ 	  	|	  	Mark  i  st
+ 	  	|	  	Unmark  i  st
+ 	  	|	  	PickUp  st1  st2
+ 	  	|	  	Drop  st
+ 	  	|	  	Turn  lr  st
+ 	  	|	  	Move  st1  st2
+ 	  	|	  	Flip  p  st1  st2
+ 	  	
+sensedir	  	::=	  	Here
+ 	  	|	  	Ahead
+ 	  	|	  	LeftAhead
+ 	  	|	  	RightAhead
+ 	  	
+cond	  	::=	  	Friend
+ 	  	|	  	Foe
+ 	  	|	  	FriendWithFood
+ 	  	|	  	FoeWithFood
+ 	  	|	  	Food
+ 	  	|	  	Rock
+ 	  	|	  	Marker  i
+ 	  	|	  	FoeMarker
+ 	  	|	  	Home
+ 	  	|	  	FoeHome
+ 	  	
+lr	  	::=	  	Left | Right
+st	  	::=	  	0 | 1 | 2 | ... | 9999
+i	  	::=	  	0 | 1 | 2 | 3 | 4 | 5
+p	  	::=	  	1 | 2 | 3 | ...
