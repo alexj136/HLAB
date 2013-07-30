@@ -3,43 +3,43 @@ ________________________
 
 Brain ::= Function Brain | Function
 
-Function ::= function fun_name > fun_name { Statement }
+Function ::= function fun_name > fun_name StatementList
 
-Statement ::= Statement Statement
+StatementList ::= StatementList Statement
 	| FailableStatement
 	| fun_name
-	| Mark i
-	| Unmark i
-	| Drop
-	| Turn lr
-	| While (cond sensedir) { Statement }
+	| mark i
+	| unmark i
+	| drop
+	| turn lr
+	| while cond sensedir StatementList end
 
-FailableStatement ::= Failable { Statement }
+FailableStatement ::= Failable StatementList
 
 fun_name ::= [a-z|A-Z|0-9|_]+
 
-Failable ::= PickUp { Statement } { Statement }
-	| Move { Statement } { Statement }
-	| Flip p { Statement } { Statement }
-	| If (cond sensedir) { Statement } { Statement }
+Failable ::= pick_up StatementList else StatementList end
+	| move StatementList else StatementList end
+	| flip p StatementList else StatementList
+	| if cond sensedir StatementList else StatementList
 
-sensedir	  	::=	  	Here
- 	  	|	  	Ahead
- 	  	|	  	LeftAhead
- 	  	|	  	RightAhead
+sensedir	  	::=	  	here
+ 	  	|	  	ahead
+ 	  	|	  	leftahead
+ 	  	|	  	rightahead
  	  	
-cond	  	::=	  	Friend
- 	  	|	  	Foe
- 	  	|	  	FriendWithFood
- 	  	|	  	FoeWithFood
- 	  	|	  	Food
- 	  	|	  	Rock
- 	  	|	  	Marker  i
- 	  	|	  	FoeMarker
- 	  	|	  	Home
- 	  	|	  	FoeHome
+cond	  	::=	  	friend
+ 	  	|	  	foe
+ 	  	|	  	friend_with_food
+ 	  	|	  	foe_with_food
+ 	  	|	  	food
+ 	  	|	  	rock
+ 	  	|	  	marker  i
+ 	  	|	  	foe_marker
+ 	  	|	  	home
+ 	  	|	  	foe_home
 
-lr	  	::=	  	Left | Right
+lr	  	::=	  	left | right
 i	  	::=	  	0 | 1 | 2 | 3 | 4 | 5
 p	  	::=	  	1 | 2 | 3 | ...
 
