@@ -1,0 +1,38 @@
+High Level Ant Brain CFG
+
+BRAIN ::= FUNCDEF | FUNCDEF BRAIN
+
+FUNCDEF ::= def DEFNAME as INSTRUCTION end
+
+INSTRUCTION
+  ::= INSTRUCTION INSTRUCTION
+    | if COND SENSEDIR do INSTRUCTION else INSTRUCTION end
+    | mark MARK
+    | unmark MARK
+    | pickup
+    | pickupelse INSTRUCTION
+    | drop
+    | turn LR
+    | move
+    | moveelse INSTRUCTION
+    | flip PROB do INSTRUCTION else INSTRUCTION end
+    | pass
+
+SENSEDIR
+  ::= here
+    | ahead
+    | leftahead
+    | rightahead
+
+COND
+  ::= friend
+    | friendfood
+    | foe
+    | foefood
+    | food
+    | rock
+    | marker MARK
+
+MARK ::= A | B | C | D | E | F
+LR   ::= left | right
+PROB ::= 1 | 2 | 3 | 4 | ...

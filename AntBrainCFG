@@ -1,0 +1,36 @@
+Ant Brain CFG
+
+BRAIN ::= INSTRUCTION BRAIN | INSTRUCTION
+
+INSTRUCTION
+  ::= Sense SENSEDIR st1 st2 COND
+    | Mark MK st
+    | Unmark MK st
+    | PickUp st1 st2
+    | Drop st
+    | Turn LR st
+    | Move st1 st2
+    | Flip p st1 st2
+
+SENSEDIR
+  ::= Here
+    | Ahead
+    | LeftAhead
+    | RightAhead
+
+COND
+  ::= Friend
+    | FriendWithFood
+    | Foe
+    | FoeWithFood
+    | Food
+    | Rock
+    | Marker MK
+    | FoeMarker
+    | Home
+    | FoeHome
+ 	  	
+LR ::= Left | Right
+st ::= 0 | 1 | 2 | ... | 9999
+MK ::= 0 | 1 | 2 | 3 | 4 | 5
+p  ::= 1 | 2 | 3 | ...
