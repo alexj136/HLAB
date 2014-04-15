@@ -10,11 +10,11 @@ INSTRUCTION
     | mark MARK
     | unmark MARK
     | pickup
-    | pickupelse INSTRUCTION
+    | pickupelse INSTRUCTION end
     | drop
     | turn LR
     | move
-    | moveelse INSTRUCTION
+    | moveelse INSTRUCTION end
     | flip PROB do INSTRUCTION else INSTRUCTION end
     | pass
 
@@ -30,9 +30,11 @@ COND
     | foe
     | foefood
     | food
+    | home
+    | foehome
     | rock
     | marker MARK
 
-MARK ::= A | B | C | D | E | F
+MARK ::= A | a | B | b | C | c | D | d | E | e | F | f
 LR   ::= left | right
 PROB ::= 1 | 2 | 3 | 4 | ...

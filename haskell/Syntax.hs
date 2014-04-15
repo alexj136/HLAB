@@ -21,16 +21,38 @@ data Instruction
     | Pass
     deriving (Eq, Ord)
 
+-- Pretty-print an instruction beginning at the given indentation level
 pShowInstruction :: Int -> Instruction -> String
 pShowInstruction i inst = case inst of
-    Compose i1 i2 -> (pShowInstruction i i1) ++ "\n" ++ (pShowInstruction i i2)
-    If cnd sdir i1 i2 ->
+    Compose inst1 inst2     ->
+        pShowInstruction i inst1 ++ pShowInstruction i inst2
+    If cnd sdir inst1 inst2 ->
         tabs i ++ "if " ++ show cnd ++ ' ' : show sdir ++ " do\n" 
-            ++ pShowInstruction (i + 1) i1 ++ "\n"
+            ++ pShowInstruction (i + 1) inst1
             ++ tabs i ++ "else\n"
-            ++ pShowInstruction (i + 1) i2 ++ "\n"
+            ++ pShowInstruction (i + 1) inst2
             ++ tabs i ++ "end\n"
-    Pass -> tabs i ++ "pass"
+    Mark mk                 -> tabs i ++ "mark " ++ show mk ++ "\n"
+    Unmark mk               -> tabs i ++ "unmark " ++ show mk ++ "\n"
+    PickUp                  -> tabs i ++ "pickup\n"
+    PickUpElse inst         ->
+        tabs i ++ "pickupelse\n"
+            ++ pShowInstruction (i + 1) inst
+            ++ tabs i ++ "end\n"
+    Drop                    -> tabs i ++ "drop\n"
+    Turn lr                 -> tabs i ++ "turn " ++ show lr ++ "\n"
+    Move                    -> tabs i ++ "move\n"
+    MoveElse inst           ->
+        tabs i ++ "moveelse\n"
+            ++ pShowInstruction (i + 1) inst
+            ++ tabs i ++ "end\n"
+    Flip prob inst1 inst2   ->
+        tabs i ++ "flip " ++ show prob ++ " do\n"
+            ++ pShowInstruction (i + 1) inst1
+            ++ tabs i ++ "else\n"
+            ++ pShowInstruction (i + 1) inst2
+            ++ tabs i ++ "end\n"
+    Pass                    -> tabs i ++ "pass\n"
 
 -- Generate a string of spaces that corresponds to the given number of tabs of
 -- width 4.
@@ -67,7 +89,16 @@ data Cond
     deriving (Eq, Ord)
 
 instance Show Cond where
-    show _ = "SHOW COND NOT YET IMPLEMENTED"
+    show cd = case cd of
+        Friend     -> "friend"
+        FriendFood -> "friendfood"
+        Foe        -> "foe"
+        FoeFood    -> "foefood"
+        Food       -> "food"
+        Home       -> "home"
+        FoeHome    -> "foehome"
+        Rock       -> "rock"
+        Marker mk  -> "marker " ++ show mk
 
 data LR = ALeft | ARight deriving (Eq, Ord)
 instance Show LR where
@@ -75,5 +106,7 @@ instance Show LR where
 
 data MkType = MkA | MkB | MkC | MkD | MkE | MkF deriving (Eq, Ord)
 instance Show MkType where
-    show mk = case mk of { MkA -> "A" ; MkB -> "B" ; MkC -> "C" ;
-        MkD -> "D" ; MkE -> "E" ; MkF -> "F" }
+    show mk = case mk of
+        { MkA -> "a" ; MkB -> "b" ; MkC -> "c"
+        ; MkD -> "d" ; MkE -> "e" ; MkF -> "f"
+        }
